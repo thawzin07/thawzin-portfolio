@@ -39,15 +39,25 @@ const Navbar = () => {
       <nav id="hamburger-nav">
         <div className="logo">ThawZin Htun</div>
         <div className="hamburger-menu">
-          <div className={`hamburger-icon ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+          <button
+            className={`hamburger-icon ${isOpen ? "open" : ""}`}
+            type="button"
+            onClick={toggleMenu}
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+          >
             <span></span>
             <span></span>
             <span></span>
-          </div>
+          </button>
           <div className={`menu-links ${isOpen ? "open" : ""}`}>
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link to={link.path} onClick={toggleMenu}>
+                <Link
+                  to={link.path}
+                  onClick={toggleMenu}
+                  className={location.pathname === link.path ? "active" : ""}
+                >
                   {link.name}
                 </Link>
               </li>

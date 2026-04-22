@@ -44,13 +44,23 @@ function Navbar() {
       <nav id="hamburger-nav">
         {!isHome && <div className="logo">ThawZin Htun</div>}
         <div className="hamburger-menu">
-          <div className={`hamburger-icon ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+          <button
+            className={`hamburger-icon ${isOpen ? "open" : ""}`}
+            type="button"
+            onClick={toggleMenu}
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+          >
             <span></span><span></span><span></span>
-          </div>
+          </button>
           <div className={`menu-links ${isOpen ? "open" : ""}`}>
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link to={link.path} onClick={toggleMenu}>
+                <Link
+                  to={link.path}
+                  onClick={toggleMenu}
+                  className={location.pathname === link.path ? "active" : ""}
+                >
                   {link.name}
                 </Link>
               </li>
@@ -62,10 +72,12 @@ function Navbar() {
   );
 }
 
-// MAIN APP COMPONENT
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isAboutPage = location.pathname === "/";
+
   return (
-    <Router>
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<About />} />
@@ -73,9 +85,20 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
-      <footer>
-        <p>Copyright &#169; 2025 ThawZin Htun. All Rights Reserved.</p>
-      </footer>
+      {!isAboutPage && (
+        <footer>
+          <p>Copyright &#169; 2025 ThawZin Htun. All Rights Reserved.</p>
+        </footer>
+      )}
+    </>
+  );
+}
+
+// MAIN APP COMPONENT
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/Portfolio_React/static/css/main.cc7321c8.css",
-    "main.js": "/Portfolio_React/static/js/main.45f5cb0c.js",
-    "static/media/project-2.png": "/Portfolio_React/static/media/project-2.2f15d9f817c3b4924ae6.png",
-    "static/media/project-1.png": "/Portfolio_React/static/media/project-1.0009f408e02c21b12607.png",
+    "main.css": "/Portfolio_React/static/css/main.3c35d177.css",
+    "main.js": "/Portfolio_React/static/js/main.ea651bb0.js",
+    "static/media/project-1.png": "/Portfolio_React/static/media/project-1.444fddea8b7928d455b4.png",
+    "static/media/project-2.png": "/Portfolio_React/static/media/project-2.4476fb36c43ca9bb2e18.png",
     "static/media/profile-pic.jpg": "/Portfolio_React/static/media/profile-pic.c7ea977cfcdc12ddaf94.jpg",
     "static/media/Resume.pdf": "/Portfolio_React/static/media/Resume.b25e2bc5f8ec2421e4c6.pdf",
-    "static/media/email.png": "/Portfolio_React/static/media/email.761df3bc69bdc631bd2f.png",
-    "static/media/checkmark.png": "/Portfolio_React/static/media/checkmark.86728d9a224a2c7c95d4.png",
+    "static/media/instagram.png": "/Portfolio_React/static/media/instagram.ac32ec0a111aeba03298.png",
     "static/media/linkedin.png": "/Portfolio_React/static/media/linkedin.032cf8a63be2f0f4d425.png",
+    "static/media/facebook.png": "/Portfolio_React/static/media/facebook.bfd1cfff9f9521198b26.png",
+    "static/media/project-finance-dashboard.svg": "/Portfolio_React/static/media/project-finance-dashboard.74c16cf988ba96244589b6a7c28d820c.svg",
     "index.html": "/Portfolio_React/index.html",
-    "main.cc7321c8.css.map": "/Portfolio_React/static/css/main.cc7321c8.css.map",
-    "main.45f5cb0c.js.map": "/Portfolio_React/static/js/main.45f5cb0c.js.map"
+    "main.3c35d177.css.map": "/Portfolio_React/static/css/main.3c35d177.css.map",
+    "main.ea651bb0.js.map": "/Portfolio_React/static/js/main.ea651bb0.js.map"
   },
   "entrypoints": [
-    "static/css/main.cc7321c8.css",
-    "static/js/main.45f5cb0c.js"
+    "static/css/main.3c35d177.css",
+    "static/js/main.ea651bb0.js"
   ]
 }

@@ -1,9 +1,34 @@
 import "../App.css";
 // 1. Import your assets
 import profilePic from "../assets/profile-pic.jpg";
-import linkedinIcon from "../assets/linkedin.png";
+import facebookIcon from "../assets/facebook.png";
 import githubIcon from "../assets/github.png";
+import instagramIcon from "../assets/instagram.png";
+import linkedinIcon from "../assets/linkedin.png";
 import resumePdf from "../assets/Resume.pdf";
+
+const socialLinks = [
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/thawzin-htun/",
+    icon: linkedinIcon,
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/thawzin07",
+    icon: githubIcon,
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/thawzin.htun.01",
+    icon: facebookIcon,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/thawzin_htun7/",
+    icon: instagramIcon,
+  },
+];
 
 const About = () => {
   return (
@@ -15,7 +40,11 @@ const About = () => {
       <div className="section__text">
         <p className="section__text__p1">Hello, I'm</p>
         <h1 className="title">ThawZin Htun</h1>
-        {/* ... description ... */}
+        <p className="profile-intro">
+          I am an Applied Artificial Intelligence undergraduate and software
+          developer who enjoys building practical web applications, AI-powered
+          tools, and user-focused systems that solve real problems.
+        </p>
         
         <div className="btn-container">
           <button className="btn btn-color-2" onClick={() => window.open(resumePdf)}>
@@ -25,22 +54,20 @@ const About = () => {
         </div>
 
         <div id="socials-container">
-          <div className="social-icon-wrapper">
-            <img 
-              src={linkedinIcon} 
-              alt="LinkedIn" 
-              className="social-icon" 
-              onClick={() => window.open('https://www.linkedin.com/in/thawzin-htun/', '_blank')} 
-            />
-          </div>
-          <div className="social-icon-wrapper">
-            <img 
-              src={githubIcon} 
-              alt="Github" 
-              className="social-icon" 
-              onClick={() => window.open('https://github.com/thawzin07', '_blank')} 
-            />
-          </div>
+          {socialLinks.map((social) => (
+            <a
+              key={social.name}
+              className="social-icon-wrapper"
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={social.name}
+              title={social.name}
+            >
+              <img src={social.icon} alt="" className="social-icon" />
+              <span>{social.name}</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
