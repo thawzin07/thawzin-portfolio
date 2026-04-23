@@ -1,6 +1,8 @@
 /* ==========================================================================
    VARIABLES & FONTS
    ========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
 :root {
   --primary-text: #333333;
   --secondary-text: #555555;
@@ -13,8 +15,6 @@
   --section-x: clamp(1rem, 5vw, 6rem);
   --section-y: clamp(3rem, 7vw, 5rem);
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
 /* ==========================================================================
    GENERAL RESET
@@ -906,6 +906,38 @@ section {
   border-color: #2563eb;
 }
 
+.contact-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.turnstile-container {
+  min-height: 65px;
+}
+
+.form-status {
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-status-success {
+  border: 1px solid #86efac;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.form-status-error {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
 /* ================= PHONE GROUP ================= */
 .phone-group {
   display: flex;
@@ -945,6 +977,12 @@ section {
 
 .contact-form .btn-primary:hover {
   background-color: #1e4ed8;
+}
+
+.contact-form .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
 }
 
 .contact-form .btn-secondary {

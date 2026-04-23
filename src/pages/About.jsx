@@ -3,9 +3,9 @@ import "../App.css";
 import profilePic from "../assets/profile-pic.jpg";
 import facebookIcon from "../assets/facebook.png";
 import githubIcon from "../assets/github.png";
-import instagramIcon from "../assets/instagram.png";
 import linkedinIcon from "../assets/linkedin.png";
 import resumePdf from "../assets/Resume.pdf";
+import telegramIcon from "../assets/telegram.png";
 
 const socialLinks = [
   {
@@ -24,9 +24,9 @@ const socialLinks = [
     icon: facebookIcon,
   },
   {
-    name: "Instagram",
-    href: "https://www.instagram.com/thawzin_htun7/",
-    icon: instagramIcon,
+    name: "Telegram",
+    href: "https://t.me/thawzin_htun7",
+    icon: telegramIcon,
   },
 ];
 
@@ -47,7 +47,10 @@ const About = () => {
         </p>
         
         <div className="btn-container">
-          <button className="btn btn-color-2" onClick={() => window.open(resumePdf)}>
+          <button
+            className="btn btn-color-2"
+            onClick={() => window.open(resumePdf, "_blank", "noopener,noreferrer")}
+          >
             Resume
           </button>
           {/* ... contact button ... */}

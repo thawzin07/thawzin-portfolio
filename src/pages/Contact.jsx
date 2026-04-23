@@ -1,12 +1,33 @@
 import "../App.css";
 
+import { useEffect, useState } from "react";
+
 import facebookIcon from "../assets/facebook.png";
 import githubIcon from "../assets/github.png";
-import instagramIcon from "../assets/instagram.png";
 import linkedinIcon from "../assets/linkedin.png";
+import telegramIcon from "../assets/telegram.png";
 import countryCallingCodes from "../data/countryCallingCodes";
 
+const CONTACT_API_URL =
+  import.meta.env.VITE_CONTACT_API_URL || "http://localhost:8000/api/contact";
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState(null);
+
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return;
+    if (document.querySelector("script[data-turnstile-script]")) return;
+
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.defer = true;
+    script.dataset.turnstileScript = "true";
+    document.body.appendChild(script);
+  }, []);
+
   const contactLinks = [
     {
       title: "LinkedIn",
@@ -27,27 +48,32 @@ const Contact = () => {
       icon: facebookIcon,
     },
     {
-      title: "Instagram",
+      title: "Telegram",
       detail: "Social and updates",
-      href: "https://www.instagram.com/thawzin_htun7/",
-      icon: instagramIcon,
+      href: "https://t.me/thawzin_htun7",
+      icon: telegramIcon,
     },
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormStatus(null);
 
     const formData = new FormData(e.target);
     const payload = {
-      name: formData.get("name"),
-      email: formData.get("email"),
+      name: formData.get("name")?.trim(),
+      email: formData.get("email")?.trim(),
       countryCode: formData.get("countryCode"),
-      phone: formData.get("phone"),
-      query: formData.get("query"),
+      phone: formData.get("phone")?.trim(),
+      query: formData.get("query")?.trim(),
+      website: formData.get("website")?.trim(),
+      turnstileToken: formData.get("cf-turnstile-response") || undefined,
     };
 
     try {
-      const res = await fetch("http://localhost:8000/api/contact", {
+      setIsSubmitting(true);
+
+      const res = await fetch(CONTACT_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,13 +81,37 @@ const Contact = () => {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Failed to send");
+      let responseBody = {};
+      try {
+        responseBody = await res.json();
+      } catch {
+        responseBody = {};
+      }
 
-      alert("Message sent successfully!");
+      if (!res.ok) {
+        const detail =
+          typeof responseBody.detail === "string"
+            ? responseBody.detail
+            : "Please check the form and try again.";
+        throw new Error(detail);
+      }
+
+      setFormStatus({
+        type: "success",
+        message: "Message sent successfully. Thanks for reaching out.",
+      });
       e.target.reset();
+      window.turnstile?.reset?.();
     } catch (err) {
-      console.error(err);
-      alert("Something went wrong. Please try again.");
+      if (import.meta.env.DEV) {
+        console.error(err);
+      }
+      setFormStatus({
+        type: "error",
+        message: err.message || "Something went wrong. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -77,8 +127,31 @@ const Contact = () => {
           <h2 className="sub-title">Send a Message</h2>
 
           <form className="contact-form" onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="Your Name" required />
-            <input type="email" name="email" placeholder="Your Email" required />
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              autoComplete="name"
+              minLength="2"
+              maxLength="80"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              autoComplete="email"
+              maxLength="254"
+              required
+            />
+            <input
+              type="text"
+              name="website"
+              className="contact-honeypot"
+              tabIndex="-1"
+              autoComplete="off"
+              aria-hidden="true"
+            />
 
             <div className="phone-group">
               <select
@@ -86,6 +159,7 @@ const Contact = () => {
                 defaultValue="+65"
                 aria-label="Country calling code"
                 className="country-code-select"
+                required
               >
                 {countryCallingCodes.map((country) => (
                   <option
@@ -101,6 +175,10 @@ const Contact = () => {
                 type="tel"
                 name="phone"
                 placeholder="Phone Number (Optional)"
+                autoComplete="tel-national"
+                maxLength="32"
+                pattern="[0-9()+ .-]*"
+                title="Use numbers, spaces, brackets, plus, dot, or dash only."
               />
             </div>
 
@@ -108,14 +186,35 @@ const Contact = () => {
               name="query"
               rows="5"
               placeholder="Your Queries"
+              minLength="10"
+              maxLength="2000"
               required
             ></textarea>
 
+            {TURNSTILE_SITE_KEY ? (
+              <div className="turnstile-container">
+                <div
+                  className="cf-turnstile"
+                  data-sitekey={TURNSTILE_SITE_KEY}
+                ></div>
+              </div>
+            ) : null}
+
+            {formStatus ? (
+              <p
+                className={`form-status form-status-${formStatus.type}`}
+                role="status"
+                aria-live="polite"
+              >
+                {formStatus.message}
+              </p>
+            ) : null}
+
             <div className="form-buttons">
-              <button type="submit" className="btn btn-primary">
-                Send
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send"}
               </button>
-              <button type="reset" className="btn btn-secondary">
+              <button type="reset" className="btn btn-secondary" disabled={isSubmitting}>
                 Clear
               </button>
             </div>
