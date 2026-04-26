@@ -35,11 +35,11 @@ const About = () => {
     <section id="profile">
       <div className="section__pic-container">
         {/* 2. Use the variable name, NOT a string */}
-        <img src={profilePic} alt="ThawZin Htun profile picture" />
+        <img src={profilePic} alt="Thaw Zin Htun profile picture" />
       </div>
       <div className="section__text">
         <p className="section__text__p1">Hello, I'm</p>
-        <h1 className="title">ThawZin Htun</h1>
+        <h1 className="title">Thaw Zin Htun</h1>
         <p className="profile-intro">
           I am an Applied Artificial Intelligence undergraduate and software
           developer who enjoys building practical web applications, AI-powered

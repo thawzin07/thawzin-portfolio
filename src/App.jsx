@@ -26,7 +26,7 @@ function Navbar() {
   return (
     <>
       <nav id="desktop-nav">
-        {!isHome && <div className="logo">ThawZin Htun</div>}
+        {!isHome && <div className="logo">Thaw Zin Htun</div>}
         <ul className="nav-links">
           {navLinks.map((link) => (
             <li key={link.name}>
@@ -42,7 +42,7 @@ function Navbar() {
       </nav>
 
       <nav id="hamburger-nav">
-        {!isHome && <div className="logo">ThawZin Htun</div>}
+        {!isHome && <div className="logo">Thaw Zin Htun</div>}
         <div className="hamburger-menu">
           <button
             className={`hamburger-icon ${isOpen ? "open" : ""}`}
@@ -87,7 +87,7 @@ function AppContent() {
       </Routes>
       {!isAboutPage && (
         <footer>
-          <p>Copyright &#169; 2025 ThawZin Htun. All Rights Reserved.</p>
+          <p>Copyright &#169; 2025 Thaw Zin Htun. All Rights Reserved.</p>
         </footer>
       )}
     </>

@@ -20,7 +20,7 @@ const Navbar = () => {
     <>
       {/* Desktop Nav */}
       <nav id="desktop-nav">
-        <div className="logo">ThawZin Htun</div>
+        <div className="logo">Thaw Zin Htun</div>
         <ul className="nav-links">
           {navLinks.map((link) => (
             <li key={link.name}>
@@ -37,7 +37,7 @@ const Navbar = () => {
 
       {/* Hamburger Nav */}
       <nav id="hamburger-nav">
-        <div className="logo">ThawZin Htun</div>
+        <div className="logo">Thaw Zin Htun</div>
         <div className="hamburger-menu">
           <button
             className={`hamburger-icon ${isOpen ? "open" : ""}`}
