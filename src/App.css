@@ -614,6 +614,20 @@ section {
   background: #f8fafc;
 }
 
+.project-image-button,
+.project-gallery-button,
+.project-lightbox button {
+  font: inherit;
+}
+
+.project-image-button,
+.project-gallery-button {
+  display: block;
+  padding: 0;
+  color: inherit;
+  cursor: zoom-in;
+}
+
 .project-img {
   width: 100%;
   height: 100%;
@@ -632,6 +646,12 @@ section {
   margin: -1rem 0 1.25rem;
 }
 
+.project-gallery-button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
+
 .project-gallery-img {
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -639,6 +659,118 @@ section {
   border-radius: 6px;
   background: #f8fafc;
   object-fit: cover;
+}
+
+.lightbox-open {
+  overflow: hidden;
+}
+
+.project-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.8rem, 3vw, 2rem);
+  background: rgba(15, 23, 42, 0.84);
+}
+
+.project-lightbox-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(100%, 1180px);
+  height: min(100%, 88vh);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: #0f172a;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
+}
+
+.project-lightbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.project-lightbox-toolbar div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.project-lightbox-toolbar strong {
+  overflow: hidden;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-lightbox-toolbar span {
+  color: #cbd5e1;
+  font-size: 0.82rem;
+}
+
+.project-lightbox-toolbar button,
+.project-lightbox-nav {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.project-lightbox-toolbar button {
+  min-height: 40px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.project-lightbox-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 1rem;
+}
+
+.project-lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.project-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 56px;
+  padding: 0;
+  font-size: 2.4rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.project-lightbox-prev {
+  left: 1rem;
+}
+
+.project-lightbox-next {
+  right: 1rem;
+}
+
+.project-lightbox-toolbar button:hover,
+.project-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .project-status {

@@ -1,4 +1,5 @@
 import "../App.css";
+import { useEffect, useState } from "react";
 import project1Img from "../assets/project-1.png";
 import project2Img from "../assets/project-2.png";
 import project3Img1 from "../assets/project3-1.png";
@@ -13,6 +14,8 @@ const projectTypeColors = {
 };
 
 const Projects = () => {
+  const [lightbox, setLightbox] = useState(null);
+
   const myProjects = [
     {
       title: "PulsePoint Fitness",
@@ -70,6 +73,57 @@ const Projects = () => {
     },
   ];
 
+  const openLightbox = (project, imageIndex = 0) => {
+    const images = project.gallery || [project.img];
+    setLightbox({
+      title: project.title,
+      images,
+      index: imageIndex,
+    });
+  };
+
+  const closeLightbox = () => setLightbox(null);
+
+  const showPreviousImage = () => {
+    setLightbox((current) =>
+      current
+        ? {
+            ...current,
+            index: (current.index - 1 + current.images.length) % current.images.length,
+          }
+        : current,
+    );
+  };
+
+  const showNextImage = () => {
+    setLightbox((current) =>
+      current
+        ? {
+            ...current,
+            index: (current.index + 1) % current.images.length,
+          }
+        : current,
+    );
+  };
+
+  useEffect(() => {
+    if (!lightbox) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") showPreviousImage();
+      if (event.key === "ArrowRight") showNextImage();
+    };
+
+    document.body.classList.add("lightbox-open");
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.classList.remove("lightbox-open");
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lightbox]);
+
   return (
     <section id="projects-page" className="projects-section">
       <div className="projects-header">
@@ -91,19 +145,31 @@ const Projects = () => {
                 projectTypeColors[project.status] || projectTypeColors[project.type],
             }}
           >
-            <div className="project-img-wrapper">
+            <button
+              type="button"
+              className="project-img-wrapper project-image-button"
+              onClick={() => openLightbox(project)}
+              aria-label={`View ${project.title} screenshot full screen`}
+            >
               <img src={project.img} alt={project.title} className="project-img" />
-            </div>
+            </button>
 
             {project.gallery ? (
               <div className="project-gallery" aria-label={`${project.title} screenshots`}>
                 {project.gallery.map((image, index) => (
-                  <img
+                  <button
                     key={image}
-                    src={image}
-                    alt={`${project.title} screenshot ${index + 1}`}
-                    className="project-gallery-img"
-                  />
+                    type="button"
+                    className="project-gallery-button"
+                    onClick={() => openLightbox(project, index)}
+                    aria-label={`View ${project.title} screenshot ${index + 1} full screen`}
+                  >
+                    <img
+                      src={image}
+                      alt={`${project.title} screenshot ${index + 1}`}
+                      className="project-gallery-img"
+                    />
+                  </button>
                 ))}
               </div>
             ) : null}
@@ -156,6 +222,60 @@ const Projects = () => {
           </article>
         ))}
       </div>
+
+      {lightbox ? (
+        <div
+          className="project-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${lightbox.title} image viewer`}
+          onClick={closeLightbox}
+        >
+          <div className="project-lightbox-panel" onClick={(event) => event.stopPropagation()}>
+            <div className="project-lightbox-toolbar">
+              <div>
+                <strong>{lightbox.title}</strong>
+                <span>
+                  {lightbox.index + 1} / {lightbox.images.length}
+                </span>
+              </div>
+              <button type="button" onClick={closeLightbox} aria-label="Close image viewer">
+                Close
+              </button>
+            </div>
+
+            <div className="project-lightbox-stage">
+              {lightbox.images.length > 1 ? (
+                <button
+                  type="button"
+                  className="project-lightbox-nav project-lightbox-prev"
+                  onClick={showPreviousImage}
+                  aria-label="Previous image"
+                >
+                  ‹
+                </button>
+              ) : null}
+
+              <img
+                src={lightbox.images[lightbox.index]}
+                alt={`${lightbox.title} screenshot ${lightbox.index + 1}`}
+                className="project-lightbox-img"
+              />
+
+              {lightbox.images.length > 1 ? (
+                <button
+                  type="button"
+                  className="project-lightbox-nav project-lightbox-next"
+                  onClick={showNextImage}
+                  aria-label="Next image"
+                >
+                  ›
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 };
