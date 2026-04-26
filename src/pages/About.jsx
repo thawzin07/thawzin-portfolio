@@ -9,12 +9,12 @@ import telegramIcon from "../assets/telegram.png";
 
 const socialLinks = [
   {
-    name: "LinkedIn",
+    name: "Lets Connect!",
     href: "https://www.linkedin.com/in/thawzin-htun/",
     icon: linkedinIcon,
   },
   {
-    name: "GitHub",
+    name: "Explore my Projects!",
     href: "https://github.com/thawzin07",
     icon: githubIcon,
   },
