@@ -9,22 +9,19 @@ const jsonResponse = (body, status = 200) =>
     },
   });
 
+const clean = (value) => (typeof value === "string" ? value.trim() : "");
+
 const isEmail = (value) =>
   typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 const isPhone = (value) =>
   !value || (typeof value === "string" && /^[0-9()+.\-\s]{0,32}$/.test(value));
 
-const clean = (value) => (typeof value === "string" ? value.trim() : "");
-
 const verifyTurnstile = async (token, remoteIp, env) => {
-  if (!env.TURNSTILE_SECRET_KEY) return;
+  if (!env.TURNSTILE_SECRET_KEY) return null;
 
   if (!token) {
-    throw new Response(
-      JSON.stringify({ detail: "Human verification is required." }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
-    );
+    return jsonResponse({ detail: "Human verification is required." }, 400);
   }
 
   const formData = new FormData();
@@ -42,14 +39,21 @@ const verifyTurnstile = async (token, remoteIp, env) => {
   const result = await response.json();
 
   if (!result.success) {
-    throw new Response(
-      JSON.stringify({ detail: "Human verification failed." }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
-    );
+    return jsonResponse({ detail: "Human verification failed." }, 400);
   }
+
+  return null;
 };
 
-export async function onRequestPost({ request, env }) {
+const handleContact = async (request, env) => {
+  if (request.method === "OPTIONS") {
+    return new Response(null, { status: 204 });
+  }
+
+  if (request.method !== "POST") {
+    return jsonResponse({ detail: "Method not allowed." }, 405);
+  }
+
   const contentLength = Number(request.headers.get("content-length") || 0);
   if (contentLength > MAX_CONTENT_LENGTH) {
     return jsonResponse({ detail: "Request body is too large." }, 413);
@@ -89,15 +93,12 @@ export async function onRequestPost({ request, env }) {
     return jsonResponse({ detail: "Please check the form and try again." }, 400);
   }
 
-  try {
-    await verifyTurnstile(
-      body.turnstileToken,
-      request.headers.get("CF-Connecting-IP"),
-      env,
-    );
-  } catch (response) {
-    return response;
-  }
+  const turnstileError = await verifyTurnstile(
+    body.turnstileToken,
+    request.headers.get("CF-Connecting-IP"),
+    env,
+  );
+  if (turnstileError) return turnstileError;
 
   const message = [
     `Name: ${name}`,
@@ -128,8 +129,16 @@ export async function onRequestPost({ request, env }) {
   }
 
   return jsonResponse({ message: "Message sent successfully" });
-}
+};
 
-export function onRequestOptions() {
-  return new Response(null, { status: 204 });
-}
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/contact") {
+      return handleContact(request, env);
+    }
+
+    return env.ASSETS.fetch(request);
+  },
+};
