@@ -35,6 +35,7 @@ const Projects = () => {
       github:
         "https://github.com/thawzin07/SIT_Tri2_WebSystemsAndTechnologiesGroupProject",
       demo: "http://34.142.168.168/",
+      video: "https://www.youtube.com/watch?v=bDHM5iRpshQ",
     },
     {
       title: "SpeedUp",
