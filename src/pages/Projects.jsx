@@ -1,7 +1,10 @@
 import "../App.css";
 import project1Img from "../assets/project-1.png";
 import project2Img from "../assets/project-2.png";
-import financeDashboardImg from "../assets/project-finance-dashboard.svg";
+import project3Img1 from "../assets/project3-1.png";
+import project3Img2 from "../assets/project3-2.png";
+import project3Img3 from "../assets/project3-3.png";
+import project3Img4 from "../assets/project3-4.png";
 
 const projectTypeColors = {
   "Academic Project": "#0f8a7a",
@@ -51,7 +54,8 @@ const Projects = () => {
       title: "Financial Trend Analysis Dashboard",
       type: "Academic Project",
       status: "Academic Project",
-      img: financeDashboardImg,
+      img: project3Img1,
+      gallery: [project3Img1, project3Img2, project3Img3, project3Img4],
       description:
         "A collaborative Python and Streamlit dashboard for analyzing live financial market data, stock prices, RSI, and key technical indicators.",
       highlights: [
@@ -62,6 +66,7 @@ const Projects = () => {
       ],
       tags: ["Python", "Streamlit", "Pandas", "yfinance", "RSI", "SMA/EMA"],
       github: "https://github.com/thawzin07/SIT_Tri1_ProgramFund_Python",
+      demo: "https://finsight-dashboard-yflq.onrender.com/",
     },
   ];
 
@@ -89,6 +94,19 @@ const Projects = () => {
             <div className="project-img-wrapper">
               <img src={project.img} alt={project.title} className="project-img" />
             </div>
+
+            {project.gallery ? (
+              <div className="project-gallery" aria-label={`${project.title} screenshots`}>
+                {project.gallery.map((image, index) => (
+                  <img
+                    key={image}
+                    src={image}
+                    alt={`${project.title} screenshot ${index + 1}`}
+                    className="project-gallery-img"
+                  />
+                ))}
+              </div>
+            ) : null}
 
             <div className="project-actions">
               {project.demo ? (
