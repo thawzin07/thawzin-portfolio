@@ -792,9 +792,22 @@ section {
 }
 
 .project-description {
-  margin-top: 0.85rem;
+  margin-top: 0.35rem;
   color: var(--secondary-text);
   overflow-wrap: anywhere;
+}
+
+.project-detail-block {
+  margin-top: 0.9rem;
+}
+
+.project-detail-label {
+  display: inline-flex;
+  color: var(--project-accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .project-highlights {

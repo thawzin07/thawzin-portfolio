@@ -22,14 +22,14 @@ const Projects = () => {
       type: "Academic Project",
       status: "Academic Project",
       img: project1Img,
-      description:
+      brief:
         "A full-stack gym membership platform built with plain PHP and MySQL, combining member services, admin operations, Stripe billing, and AI-supported assistance.",
-      highlights: [
-        "Public pages for plans, trainers, schedules, locations, contact, and FAQs",
-        "Member registration, login, profiles, memberships, bookings, and waitlists",
-        "Admin dashboard with CRUD for users, plans, trainers, classes, locations, bookings, and messages",
-        "Stripe checkout, webhook processing, payment history, and retry/resume payment flows",
-        "Security basics including password hashing, prepared statements, CSRF tokens, escaping, and role checks",
+      role: "Full-stack developer with security, AI, payment, and deployment ownership.",
+      contributions: [
+        "Built the OpenAI-powered gym chatbot, route wiring, and persistent chat history.",
+        "Implemented booking, payment, notification, member profile, and admin workflow improvements.",
+        "Hardened validation/security with prepared statements, CSRF handling, escaping, role checks, and accessibility fixes.",
+        "Reorganized SQL/assets, added VM deployment workflow support, and improved project documentation.",
       ],
       tags: ["PHP 8", "MySQL 8", "Bootstrap 5", "Stripe", "Security", "AI"],
       github:
@@ -42,13 +42,14 @@ const Projects = () => {
       type: "GreyMatter DL Week project",
       status: "Hackathon Project",
       img: project2Img,
-      description:
+      brief:
         "An adaptive AI learning platform that analyzes uploaded study material, generates practice content, and gives students explainable study guidance over time.",
-      highlights: [
-        "OpenAI-powered tutor with Clear / Still confused clarification loops",
-        "Context-grounded quiz and flashcard generation from uploaded or pasted study content",
-        "Firebase auth and Firestore persistence with Cloudinary file storage",
-        "Node.js and Express backend on Render with frontend hosted on GitHub Pages",
+      role: "Frontend modularization, responsive UI, AI tutor/practice reliability, and deployment support.",
+      contributions: [
+        "Separated the app into feature modules, shared layout files, and dedicated pages for dashboard, tutor, notes, practice, and timetable flows.",
+        "Improved mobile responsiveness with hamburger/sidebar navigation and cleaner page layouts.",
+        "Hardened account deletion, Firebase state handling, file upload wiring, and Render health/deployment behavior.",
+        "Iterated on OpenAI tutor clarity loops, practice generation, source deletion, and user-scoped local state reliability.",
       ],
       tags: ["OpenAI", "Node.js", "Firebase", "Cloudinary", "GitHub Pages"],
       github: "https://github.com/GreyMatter-DLWeek/speedup",
@@ -61,13 +62,14 @@ const Projects = () => {
       status: "Academic Project",
       img: project3Img1,
       gallery: [project3Img1, project3Img2, project3Img3, project3Img4],
-      description:
+      brief:
         "A collaborative Python and Streamlit dashboard for analyzing live financial market data, stock prices, RSI, and key technical indicators.",
-      highlights: [
-        "Streamlit dashboard with sidebar navigation for stock analysis views",
-        "Live financial data workflow using Python data-analysis libraries",
-        "Technical indicators including RSI, stock price trends, and moving-average style analysis",
-        "Team-based programming fundamentals project with modular Python files and tests",
+      role: "Python/Streamlit dashboard developer and deployment integrator.",
+      contributions: [
+        "Built and refined dashboard flows for stock trends, RSI, persistent charts, and user-selected market analysis.",
+        "Integrated OpenAI chatbot support into the RSI dashboard experience.",
+        "Improved financial display wording, menu structure, comments, and code cleanup across app and calculation modules.",
+        "Added Render deployment configuration, runtime files, dependency updates, and API handler changes for hosting.",
       ],
       tags: ["Python", "Streamlit", "Pandas", "yfinance", "RSI", "SMA/EMA"],
       github: "https://github.com/thawzin07/SIT_Tri1_ProgramFund_Python",
@@ -216,11 +218,20 @@ const Projects = () => {
               <h2 className="project-title">{project.title}</h2>
             </div>
 
-            <p className="project-description">{project.description}</p>
+            <div className="project-detail-block">
+              <span className="project-detail-label">Brief</span>
+              <p className="project-description">{project.brief}</p>
+            </div>
+
+            <div className="project-detail-block">
+              <span className="project-detail-label">My Role</span>
+              <p className="project-description">{project.role}</p>
+            </div>
 
             <ul className="project-highlights">
-              {project.highlights.map((highlight) => (
-                <li key={highlight}>{highlight}</li>
+              <span className="project-detail-label">My Contributions</span>
+              {project.contributions.map((contribution) => (
+                <li key={contribution}>{contribution}</li>
               ))}
             </ul>
 
