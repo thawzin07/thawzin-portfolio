@@ -59,8 +59,23 @@ const handleContact = async (request, env) => {
     return jsonResponse({ detail: "Request body is too large." }, 413);
   }
 
-  if (!env.RESEND_API_KEY || !env.CONTACT_FROM_EMAIL || !env.CONTACT_TO_EMAIL) {
-    return jsonResponse({ detail: "Contact service is not configured." }, 500);
+  const missingConfig = [
+    ["RESEND_API_KEY", env.RESEND_API_KEY],
+    ["CONTACT_FROM_EMAIL", env.CONTACT_FROM_EMAIL],
+    ["CONTACT_TO_EMAIL", env.CONTACT_TO_EMAIL],
+  ]
+    .filter(([, value]) => !value)
+    .map(([name]) => name);
+
+  if (missingConfig.length > 0) {
+    return jsonResponse(
+      {
+        detail: `Contact service is not configured. Missing: ${missingConfig.join(
+          ", ",
+        )}`,
+      },
+      500,
+    );
   }
 
   let body;
