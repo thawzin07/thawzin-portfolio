@@ -9,7 +9,7 @@ import telegramIcon from "../assets/telegram.png";
 import countryCallingCodes from "../data/countryCallingCodes";
 
 const CONTACT_API_URL =
-  import.meta.env.VITE_CONTACT_API_URL || "http://localhost:8000/api/contact";
+  import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
 const Contact = () => {
