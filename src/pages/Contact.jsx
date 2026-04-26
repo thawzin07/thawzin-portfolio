@@ -31,13 +31,13 @@ const Contact = () => {
   const contactLinks = [
     {
       title: "LinkedIn",
-      detail: "Professional profile",
+      detail: "Lets Connect!",
       href: "https://www.linkedin.com/in/thawzin-htun/",
       icon: linkedinIcon,
     },
     {
       title: "GitHub",
-      detail: "Code and projects",
+      detail: "Explore my Projects!",
       href: "https://github.com/thawzin07",
       icon: githubIcon,
     },
