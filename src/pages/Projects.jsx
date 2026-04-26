@@ -52,6 +52,7 @@ const Projects = () => {
       tags: ["OpenAI", "Node.js", "Firebase", "Cloudinary", "GitHub Pages"],
       github: "https://github.com/GreyMatter-DLWeek/speedup",
       demo: "https://greymatter-dlweek.github.io/speedup/",
+      video: "https://www.youtube.com/watch?v=2yiJaj0OX4U",
     },
     {
       title: "Financial Trend Analysis Dashboard",
@@ -197,6 +198,16 @@ const Projects = () => {
               >
                 GitHub
               </a>
+              {project.video ? (
+                <a
+                  className="btn project-link project-link-video"
+                  href={project.video}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  YouTube
+                </a>
+              ) : null}
             </div>
 
             <div className="project-card-heading">

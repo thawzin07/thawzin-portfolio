@@ -843,7 +843,7 @@ section {
 
 .project-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.8rem;
   margin-top: -0.25rem;
 }
@@ -872,6 +872,12 @@ section {
 .project-link-github {
   border-color: #24292f;
   background: #24292f;
+  color: #ffffff;
+}
+
+.project-link-video {
+  border-color: #dc2626;
+  background: #dc2626;
   color: #ffffff;
 }
 
@@ -905,6 +911,12 @@ section {
 .project-link-github:hover {
   background: #0969da;
   border-color: #0969da;
+  color: #ffffff;
+}
+
+.project-link-video:hover {
+  background: #991b1b;
+  border-color: #991b1b;
   color: #ffffff;
 }
 
