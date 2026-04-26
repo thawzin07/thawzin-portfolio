@@ -118,14 +118,26 @@ const handleContact = async (request, env) => {
     body: JSON.stringify({
       from: env.CONTACT_FROM_EMAIL,
       to: [env.CONTACT_TO_EMAIL],
-      reply_to: email,
       subject: "New Contact Form Submission",
       text: message,
     }),
   });
 
   if (!response.ok) {
-    return jsonResponse({ detail: "Failed to send email." }, 500);
+    let errorDetail = "Failed to send email.";
+    try {
+      const errorBody = await response.json();
+      errorDetail = errorBody.message || errorBody.error || errorDetail;
+    } catch {
+      errorDetail = await response.text();
+    }
+
+    console.error("Resend email failed", {
+      status: response.status,
+      detail: errorDetail,
+    });
+
+    return jsonResponse({ detail: errorDetail }, 500);
   }
 
   return jsonResponse({ message: "Message sent successfully" });
