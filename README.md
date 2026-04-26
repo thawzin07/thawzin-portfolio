@@ -21,9 +21,14 @@ Live site: [https://thawzinhtun.com/](https://thawzinhtun.com/)
 ## Featured Projects
 
 - PulsePoint Fitness: full-stack gym membership platform with PHP, MySQL, Bootstrap, Stripe, admin workflows, and security basics.
+  - Live demo: [http://34.142.168.168/](http://34.142.168.168/)
+  - GitHub: [https://github.com/thawzin07/SIT_Tri2_WebSystemsAndTechnologiesGroupProject](https://github.com/thawzin07/SIT_Tri2_WebSystemsAndTechnologiesGroupProject)
 - SpeedUp: AI learning platform using OpenAI, Node.js, Firebase, Cloudinary, and a Render-hosted backend.
+  - Live demo: [https://greymatter-dlweek.github.io/speedup/](https://greymatter-dlweek.github.io/speedup/)
+  - GitHub: [https://github.com/GreyMatter-DLWeek/speedup](https://github.com/GreyMatter-DLWeek/speedup)
 - Financial Trend Analysis Dashboard: Python and Streamlit dashboard for stock trends, RSI, and financial market analysis.
   - Live demo: [https://finsight-dashboard-yflq.onrender.com/](https://finsight-dashboard-yflq.onrender.com/)
+  - GitHub: [https://github.com/thawzin07/SIT_Tri1_ProgramFund_Python](https://github.com/thawzin07/SIT_Tri1_ProgramFund_Python)
 
 ## Tech Stack
 
@@ -34,57 +39,8 @@ Live site: [https://thawzinhtun.com/](https://thawzinhtun.com/)
 - Cloudflare custom domain
 - Resend email API for the contact form
 
-## Features
-
-- Clean browser routes without hash URLs
-- Responsive portfolio pages
-- Project image lightbox with keyboard navigation
-- Contact form served through a Cloudflare Worker
-- SEO metadata, Open Graph tags, Twitter card tags, JSON-LD structured data
-- `robots.txt` and `sitemap.xml`
-
-## Local Development
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
-
-Lint:
-
-```bash
-npm run lint
-```
-
-## Environment Variables
-
-The contact form expects these variables in Cloudflare:
-
-```text
-RESEND_API_KEY
-CONTACT_TO_EMAIL
-CONTACT_FROM_EMAIL
-```
-
-For local frontend testing, see `.env.example`.
-
 ## Deployment
 
 The site is deployed on Cloudflare using the custom domain:
 
 [https://thawzinhtun.com/](https://thawzinhtun.com/)
-
-Cloudflare serves the built assets from `build/` and runs `src/worker.js` for `/api/contact`.
