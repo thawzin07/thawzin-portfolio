@@ -8,5 +8,9 @@
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "CONTACT_TO_EMAIL": "thawzinhtun474@gmail.com",
+    "CONTACT_FROM_EMAIL": "Thaw Zin Htun Portfolio <contact@thawzinhtun.com>"
   }
 }
