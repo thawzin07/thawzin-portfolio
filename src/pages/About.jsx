@@ -41,9 +41,10 @@ const About = () => {
         <p className="section__text__p1">Hello, I'm</p>
         <h1 className="title">Thaw Zin Htun</h1>
         <p className="profile-intro">
-          I am an Applied Artificial Intelligence undergraduate and software
-          developer who enjoys building practical web applications, AI-powered
-          tools, and user-focused systems that solve real problems.
+          I am an Applied AI student and software developer who enjoys turning
+          ideas into working products. I build practical software that connects
+          web development, AI, and data into useful tools with clear interfaces,
+          reliable systems, and applications that solve real user problems.
         </p>
         
         <div className="btn-container">

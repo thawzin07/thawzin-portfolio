@@ -6,6 +6,7 @@ import facebookIcon from "../assets/icon-facebook.png";
 import githubIcon from "../assets/icon-github.png";
 import linkedinIcon from "../assets/icon-linkedin.png";
 import telegramIcon from "../assets/icon-telegram.png";
+import coffeeCupImg from "../assets/coffee-cup.png";
 import countryCallingCodes from "../data/countryCallingCodes";
 
 const CONTACT_API_URL =
@@ -37,7 +38,7 @@ const Contact = () => {
     },
     {
       title: "GitHub",
-      detail: "Explore my Projects!",
+      detail: "Explore More of My Projects",
       href: "https://github.com/thawzin07",
       icon: githubIcon,
     },
@@ -241,9 +242,12 @@ const Contact = () => {
           </div>
 
           <div className="support-note">
-            <div>
-              <h2>Support My Work</h2>
-              <p>Optional support for future projects and experiments.</p>
+            <div className="support-note-content">
+              <img src={coffeeCupImg} alt="" className="support-note-icon" />
+              <div>
+                <h2>Support My Work</h2>
+                <p>Optional support for future projects and experiments.</p>
+              </div>
             </div>
             <a
               href="https://www.buymeacoffee.com/thawzin"

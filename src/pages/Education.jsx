@@ -12,7 +12,7 @@ const educationItems = [
   {
     title: "Diploma in Information Technology",
     institution: "Singapore Polytechnic",
-    period: "Diploma, 2025",
+    period: "2025",
     badge: "Software Engineering",
     description:
       "Specialized in software engineering with a minor in 5G and AIoT, focused on practical application development and emerging connected systems.",
@@ -20,7 +20,7 @@ const educationItems = [
   {
     title: "Bachelor of Engineering (Civil)",
     institution: "Mandalay Technological University",
-    period: "Foundation Year, 2020",
+    period: "2018-2020",
     badge: "Engineering Foundation",
     description:
       "Completed foundation-year engineering studies before transitioning into information technology.",
@@ -33,12 +33,12 @@ const educationItems = [
     period: "2018",
     badge: "O-Level Equivalent",
     description:
-      "Equivalent to IGCSE O-levels, with distinctions in Math, Physics, Chemistry, Biology, and Myanmar.",
+      "Distinctions in Maths, Physics, Chemistry, Biology, and Myanmar.",
   },
   {
     title: "Practical A+ Certificate",
     institution: "KMD Institute",
-    period: "Certificate",
+    period: "2018",
     badge: "IT Support",
     description:
       "Hands-on training in installation, configuration, maintenance, and troubleshooting of IT systems.",
@@ -83,8 +83,10 @@ const Education = () => {
         <p className="section__text__p1">Explore My</p>
         <h1 className="title">Education & Skills</h1>
         <p className="education-intro">
-          An applied AI and software-focused pathway shaped by engineering
-          foundations, hands-on systems training, and practical development.
+          My pathway connects Applied Artificial Intelligence, software
+          engineering, web development, and hands-on systems work through
+          studies at Singapore Institute of Technology and Singapore
+          Polytechnic.
         </p>
       </div>
 

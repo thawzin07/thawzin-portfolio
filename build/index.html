@@ -43,42 +43,78 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Thaw Zin Htun",
-        "url": "https://thawzinhtun.com/",
-        "image": "https://thawzinhtun.com/assets/thaw-zin-htun-profile.jpg",
-        "jobTitle": "Applied Artificial Intelligence Undergraduate and Software Developer",
-        "description": "Applied Artificial Intelligence undergraduate and software developer building web applications, AI-powered tools, and data dashboards.",
-        "sameAs": [
-          "https://www.linkedin.com/in/thawzin-htun/",
-          "https://github.com/thawzin07",
-          "https://www.facebook.com/thawzin.htun.01",
-          "https://t.me/thawzin_htun7"
-        ],
-        "knowsAbout": [
-          "Artificial Intelligence",
-          "Web Development",
-          "React",
-          "Python",
-          "Data Dashboards",
-          "Streamlit",
-          "Node.js"
-        ],
-        "alumniOf": [
+        "@graph": [
           {
-            "@type": "CollegeOrUniversity",
-            "name": "Singapore Polytechnic"
+            "@type": "Person",
+            "@id": "https://thawzinhtun.com/#person",
+            "name": "Thaw Zin Htun",
+            "url": "https://thawzinhtun.com/",
+            "image": "https://thawzinhtun.com/assets/thaw-zin-htun-profile.jpg",
+            "jobTitle": [
+              "Applied Artificial Intelligence Undergraduate",
+              "Software Developer",
+              "AI Developer"
+            ],
+            "description": "Thaw Zin Htun is an Applied Artificial Intelligence undergraduate at Singapore Institute of Technology and a Singapore Polytechnic Information Technology graduate building web applications, AI-powered tools, and data dashboards.",
+            "sameAs": [
+              "https://www.linkedin.com/in/thawzin-htun/",
+              "https://github.com/thawzin07",
+              "https://www.facebook.com/thawzin.htun.01",
+              "https://t.me/thawzin_htun7"
+            ],
+            "knowsAbout": [
+              "Artificial Intelligence",
+              "Software Development",
+              "AI Engineering",
+              "Web Development",
+              "React",
+              "Python",
+              "Node.js",
+              "PHP",
+              "Data Dashboards",
+              "Streamlit",
+              "OpenAI API"
+            ],
+            "alumniOf": [
+              {
+                "@type": "CollegeOrUniversity",
+                "name": "Singapore Polytechnic"
+              },
+              {
+                "@type": "CollegeOrUniversity",
+                "name": "Singapore Institute of Technology"
+              }
+            ]
           },
           {
-            "@type": "CollegeOrUniversity",
-            "name": "Singapore Institute of Technology"
+            "@type": "WebSite",
+            "@id": "https://thawzinhtun.com/#website",
+            "url": "https://thawzinhtun.com/",
+            "name": "Thaw Zin Htun Portfolio",
+            "description": "Portfolio of Thaw Zin Htun, an AI and software developer in Singapore.",
+            "publisher": {
+              "@id": "https://thawzinhtun.com/#person"
+            }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://thawzinhtun.com/#webpage",
+            "url": "https://thawzinhtun.com/",
+            "name": "Thaw Zin Htun | AI & Software Developer",
+            "description": "Portfolio of Thaw Zin Htun, an Applied Artificial Intelligence undergraduate and software developer building web applications, AI tools, and data dashboards.",
+            "isPartOf": {
+              "@id": "https://thawzinhtun.com/#website"
+            },
+            "about": {
+              "@id": "https://thawzinhtun.com/#person"
+            }
           }
         ]
       }
     </script>
     <title>Thaw Zin Htun</title>
-    <script type="module" crossorigin src="/assets/index-B4g39tMU.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CGWdtmIh.css">
+    <script type="module" crossorigin src="/assets/index-utQVfrF3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-6NparWdp.css">
   </head>
   <body>
     <div id="root"></div>

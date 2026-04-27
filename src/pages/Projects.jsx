@@ -95,43 +95,50 @@ const Projects = () => {
             <p className="project-description project-card-summary">{project.brief}</p>
 
             <div className="project-actions">
-              <Link
-                className="btn project-link project-link-case"
-                to={`/projects/${project.slug}`}
-              >
-                Case Study
+              <Link className="project-primary-action" to={`/projects/${project.slug}`}>
+                View Case Study
               </Link>
-              {project.demo ? (
+              <div className="project-secondary-actions">
+                {project.demo ? (
+                  <a
+                    className="project-secondary-link project-secondary-link-demo"
+                    href={project.demo}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Live Demo
+                  </a>
+                ) : null}
                 <a
-                  className="btn project-link project-link-primary"
-                  href={project.demo}
+                  className="project-secondary-link project-secondary-link-github"
+                  href={project.github}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Live Demo
+                  GitHub
                 </a>
-              ) : null}
-              <a
-                className="btn project-link project-link-github"
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub
-              </a>
-              {project.video ? (
-                <a
-                  className="btn project-link project-link-video"
-                  href={project.video}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  YouTube
-                </a>
-              ) : null}
+                {project.video ? (
+                  <a
+                    className="project-secondary-link project-secondary-link-video"
+                    href={project.video}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    YouTube
+                  </a>
+                ) : null}
+              </div>
             </div>
           </article>
         ))}
+      </div>
+
+      <div className="projects-more-note">
+        <span>More projects are on the way.</span>
+        <p>
+          I continue building, improving, and documenting practical software,
+          AI, and data-focused work.
+        </p>
       </div>
 
       {lightbox ? (
