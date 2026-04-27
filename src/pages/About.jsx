@@ -1,11 +1,11 @@
 import "../App.css";
 // 1. Import your assets
-import profilePic from "../assets/profile-pic.jpg";
-import facebookIcon from "../assets/facebook.png";
-import githubIcon from "../assets/github.png";
-import linkedinIcon from "../assets/linkedin.png";
-import resumePdf from "../assets/Resume.pdf";
-import telegramIcon from "../assets/telegram.png";
+import profilePic from "../assets/thaw-zin-htun-profile.jpg";
+import facebookIcon from "../assets/icon-facebook.png";
+import githubIcon from "../assets/icon-github.png";
+import linkedinIcon from "../assets/icon-linkedin.png";
+import resumePdf from "../assets/thaw-zin-htun-resume.pdf";
+import telegramIcon from "../assets/icon-telegram.png";
 
 const socialLinks = [
   {

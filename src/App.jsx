@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import "./App.css";
 
@@ -6,6 +6,7 @@ import "./App.css";
 import About from "./pages/About";
 import Education from "./pages/Education";
 import Projects from "./pages/Projects";
+import ProjectCaseStudy from "./pages/ProjectCaseStudy";
 import Contact from "./pages/Contact";
 
 // NAVBAR COMPONENT (Extracted for clarity)
@@ -76,6 +77,14 @@ function AppContent() {
   const location = useLocation();
   const isAboutPage = location.pathname === "/";
 
+  useLayoutEffect(() => {
+    const html = document.documentElement;
+    const previousScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    html.style.scrollBehavior = previousScrollBehavior;
+  }, [location.pathname]);
+
   return (
     <>
       <Navbar />
@@ -83,6 +92,7 @@ function AppContent() {
         <Route path="/" element={<About />} />
         <Route path="/education" element={<Education />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:slug" element={<ProjectCaseStudy />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
       {!isAboutPage && (

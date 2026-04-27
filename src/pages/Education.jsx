@@ -47,16 +47,32 @@ const educationItems = [
 
 const skillGroups = [
   {
-    title: "Programming",
-    skills: ["JavaScript", "Python", "Java", "C", "SQL"],
+    title: "Languages",
+    skills: ["JavaScript", "TypeScript", "Python", "Java", "PHP", "C", "SQL"],
   },
   {
-    title: "Web Development",
-    skills: ["React", "Node.js", "MongoDB", "HTML/CSS", "Git"],
+    title: "Frontend",
+    skills: ["React", "Vite", "Vue.js", "React Native", "HTML", "CSS", "Responsive UI"],
   },
   {
-    title: "AI & Emerging Tech",
-    skills: ["Machine Learning", "AI Integration", "5G", "AIoT"],
+    title: "Backend & Data",
+    skills: ["Node.js", "Express", "Django", "Spring Boot", "Streamlit", "MySQL", "SQLite", "MongoDB"],
+  },
+  {
+    title: "AI & APIs",
+    skills: ["OpenAI API", "LLM Integration", "TensorFlow", "PyTorch", "OpenCV", "Machine Learning", "REST APIs"],
+  },
+  {
+    title: "Cloud & Tools",
+    skills: ["Cloudflare", "Render", "Docker", "Git", "GitHub Actions", "Firebase", "Cloudinary", "WordPress"],
+  },
+  {
+    title: "Libraries & Platforms",
+    skills: ["Pandas", "NumPy", "Plotly", "yfinance", "Stripe", "GitHub Pages", "Linux VM"],
+  },
+  {
+    title: "Methods",
+    skills: ["SDLC", "Scrum", "Project Management", "Troubleshooting", "Client Communication"],
   },
 ];
 

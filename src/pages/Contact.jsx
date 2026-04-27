@@ -2,10 +2,10 @@ import "../App.css";
 
 import { useEffect, useState } from "react";
 
-import facebookIcon from "../assets/facebook.png";
-import githubIcon from "../assets/github.png";
-import linkedinIcon from "../assets/linkedin.png";
-import telegramIcon from "../assets/telegram.png";
+import facebookIcon from "../assets/icon-facebook.png";
+import githubIcon from "../assets/icon-github.png";
+import linkedinIcon from "../assets/icon-linkedin.png";
+import telegramIcon from "../assets/icon-telegram.png";
 import countryCallingCodes from "../data/countryCallingCodes";
 
 const CONTACT_API_URL =
