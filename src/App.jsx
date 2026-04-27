@@ -130,14 +130,17 @@ const buildStructuredData = (pathname, seo) => {
     publisher: { "@id": `${SITE_URL}/#person` },
   };
 
+  const isProfilePage = pathname === "/";
+
   const webPage = {
-    "@type": seo.project ? "ProfilePage" : "WebPage",
+    "@type": isProfilePage ? "ProfilePage" : "WebPage",
     "@id": `${canonical}#webpage`,
     url: canonical,
     name: seo.title,
     description: seo.description,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#person` },
+    ...(isProfilePage ? { mainEntity: { "@id": `${SITE_URL}/#person` } } : {}),
   };
 
   const graph = [person, webSite, webPage];
