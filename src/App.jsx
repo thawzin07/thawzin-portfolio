@@ -1,9 +1,17 @@
-import { useLayoutEffect, useMemo, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
 
 // PAGE COMPONENTS
-import About from "./pages/About";
+import Home from "./pages/Home";
 import Education from "./pages/Education";
 import Projects from "./pages/Projects";
 import ProjectCaseStudy from "./pages/ProjectCaseStudy";
@@ -78,6 +86,18 @@ const getSeoForPath = (pathname) => {
 
 const buildStructuredData = (pathname, seo) => {
   const canonical = `${SITE_URL}${pathname}`;
+  const projectItemList = {
+    "@type": "ItemList",
+    "@id": `${SITE_URL}/projects#project-list`,
+    name: "Portfolio Projects",
+    itemListElement: projects.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: project.title,
+      url: `${SITE_URL}/projects/${project.slug}`,
+    })),
+  };
+
   const person = {
     "@type": "Person",
     "@id": `${SITE_URL}/#person`,
@@ -130,20 +150,40 @@ const buildStructuredData = (pathname, seo) => {
     publisher: { "@id": `${SITE_URL}/#person` },
   };
 
-  const isProfilePage = pathname === "/";
+  const getPageType = () => {
+    if (pathname === "/") return "ProfilePage";
+    if (pathname === "/projects") return "CollectionPage";
+    if (pathname === "/education") return "AboutPage";
+    if (pathname === "/contact") return "ContactPage";
+    return "WebPage";
+  };
+
+  const getMainEntity = () => {
+    if (pathname === "/") return { "@id": `${SITE_URL}/#person` };
+    if (pathname === "/projects") return { "@id": projectItemList["@id"] };
+    if (seo.project) return { "@id": `${canonical}#project` };
+    return undefined;
+  };
+
+  const pageType = getPageType();
+  const mainEntity = getMainEntity();
 
   const webPage = {
-    "@type": isProfilePage ? "ProfilePage" : "WebPage",
+    "@type": pageType,
     "@id": `${canonical}#webpage`,
     url: canonical,
     name: seo.title,
     description: seo.description,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#person` },
-    ...(isProfilePage ? { mainEntity: { "@id": `${SITE_URL}/#person` } } : {}),
+    ...(mainEntity ? { mainEntity } : {}),
   };
 
   const graph = [person, webSite, webPage];
+
+  if (pathname === "/projects") {
+    graph.push(projectItemList);
+  }
 
   if (seo.project) {
     graph.push({
@@ -202,28 +242,138 @@ function SeoManager() {
 // NAVBAR COMPONENT (Extracted for clarity)
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showHomeLogo, setShowHomeLogo] = useState(false);
+  const [activeHomeSection, setActiveHomeSection] = useState("home");
   const location = useLocation();
   const isHome = location.pathname === "/";
+
+  useEffect(() => {
+    if (!isHome) {
+      return undefined;
+    }
+
+    const updateLogoVisibility = () => {
+      const projectsSection = document.getElementById("projects");
+      const navHeight = document.querySelector("nav")?.getBoundingClientRect().height || 64;
+      const triggerPoint = projectsSection
+        ? projectsSection.offsetTop - navHeight * 1.25
+        : window.innerHeight * 0.75;
+
+      setShowHomeLogo(window.scrollY >= triggerPoint);
+    };
+
+    updateLogoVisibility();
+    window.addEventListener("scroll", updateLogoVisibility, { passive: true });
+    window.addEventListener("resize", updateLogoVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", updateLogoVisibility);
+      window.removeEventListener("resize", updateLogoVisibility);
+    };
+  }, [isHome]);
+
+  useEffect(() => {
+    if (!isHome) {
+      return undefined;
+    }
+
+    const sections = [
+      { id: "profile", name: "home" },
+      { id: "projects", name: "projects" },
+      { id: "education", name: "education" },
+      { id: "home-contact-cta", name: "contact" },
+    ];
+
+    const updateActiveSection = () => {
+      const nav = document.getElementById("desktop-nav");
+      const navHeight = nav?.getBoundingClientRect().height || 64;
+      const activationPoint = navHeight + Math.min(420, window.innerHeight * 0.55);
+      let nextSection = sections[0].name;
+
+      sections.forEach(({ id, name }) => {
+        const section = document.getElementById(id);
+
+        if (section && section.getBoundingClientRect().top <= activationPoint) {
+          nextSection = name;
+        }
+      });
+
+      const isAtPageEnd =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 2;
+
+      if (isAtPageEnd) {
+        nextSection = "contact";
+      }
+
+      setActiveHomeSection((currentSection) =>
+        currentSection === nextSection ? currentSection : nextSection,
+      );
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, [isHome, location.hash]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navLinks = [
-    { name: "About", path: "/" },
-    { name: "Projects", path: "/projects" },
-    { name: "Education", path: "/education" },
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/#projects", section: "projects" },
+    { name: "Education", path: "/#education", section: "education" },
     { name: "Contact", path: "/contact" },
   ];
+
+  const isLinkActive = (link) => {
+    if (link.name === "Home") {
+      return location.pathname === "/" && activeHomeSection === "home";
+    }
+
+    if (link.section === "projects") {
+      return (
+        location.pathname === "/projects" ||
+        location.pathname.startsWith("/projects/") ||
+        (location.pathname === "/" && activeHomeSection === "projects")
+      );
+    }
+
+    if (link.section === "education") {
+      return (
+        location.pathname === "/education" ||
+        (location.pathname === "/" && activeHomeSection === "education")
+      );
+    }
+
+    if (link.name === "Contact") {
+      return (
+        location.pathname === "/contact" ||
+        (location.pathname === "/" && activeHomeSection === "contact")
+      );
+    }
+
+    return location.pathname === link.path;
+  };
 
   return (
     <>
       <nav id="desktop-nav">
-        {!isHome && <div className="logo">Thaw Zin Htun</div>}
+        <div
+          className={`logo logo-home ${isHome && !showHomeLogo ? "logo-home-hidden" : ""}`}
+        >
+          Thaw Zin Htun
+        </div>
         <ul className="nav-links">
           {navLinks.map((link) => (
             <li key={link.name}>
               <Link 
                 to={link.path} 
-                className={location.pathname === link.path ? "active" : ""}
+                className={isLinkActive(link) ? "active" : ""}
               >
                 {link.name}
               </Link>
@@ -233,7 +383,11 @@ function Navbar() {
       </nav>
 
       <nav id="hamburger-nav">
-        {!isHome && <div className="logo">Thaw Zin Htun</div>}
+        <div
+          className={`logo logo-home ${isHome && !showHomeLogo ? "logo-home-hidden" : ""}`}
+        >
+          Thaw Zin Htun
+        </div>
         <div className="hamburger-menu">
           <button
             className={`hamburger-icon ${isOpen ? "open" : ""}`}
@@ -250,7 +404,7 @@ function Navbar() {
                 <Link
                   to={link.path}
                   onClick={toggleMenu}
-                  className={location.pathname === link.path ? "active" : ""}
+                  className={isLinkActive(link) ? "active" : ""}
                 >
                   {link.name}
                 </Link>
@@ -263,34 +417,86 @@ function Navbar() {
   );
 }
 
+function ScrollToTopButton() {
+  const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const updateVisibility = () => setIsVisible(window.scrollY > window.innerHeight * 0.7);
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    if (location.pathname === "/" && location.hash) {
+      navigate("/", { replace: true });
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      });
+      return;
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
+
+  return (
+    <button
+      type="button"
+      className={`scroll-top-button ${isVisible ? "visible" : ""}`}
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      title="Scroll to top"
+    >
+      ↑
+    </button>
+  );
+}
+
 function AppContent() {
   const location = useLocation();
-  const isAboutPage = location.pathname === "/";
 
   useLayoutEffect(() => {
     const html = document.documentElement;
     const previousScrollBehavior = html.style.scrollBehavior;
     html.style.scrollBehavior = "auto";
+
+    const hash = location.hash.replace(/^#/, "");
+
+    if (hash) {
+      const frame = window.requestAnimationFrame(() => {
+        document.getElementById(hash)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+
+      html.style.scrollBehavior = previousScrollBehavior;
+      return () => window.cancelAnimationFrame(frame);
+    }
+
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     html.style.scrollBehavior = previousScrollBehavior;
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   return (
     <>
       <SeoManager />
       <Navbar />
       <Routes>
-        <Route path="/" element={<About />} />
+        <Route path="/" element={<Home />} />
         <Route path="/education" element={<Education />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects" element={<Navigate to="/#projects" replace />} />
         <Route path="/projects/:slug" element={<ProjectCaseStudy />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
-      {!isAboutPage && (
-        <footer>
-          <p>Copyright &#169; 2025 Thaw Zin Htun. All Rights Reserved.</p>
-        </footer>
-      )}
+      <ScrollToTopButton />
+      <footer>
+        <p>Copyright &#169; 2025 Thaw Zin Htun. All Rights Reserved.</p>
+      </footer>
     </>
   );
 }

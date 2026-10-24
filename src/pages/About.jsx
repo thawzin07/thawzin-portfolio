@@ -4,7 +4,6 @@ import profilePic from "../assets/thaw-zin-htun-profile.jpg";
 import facebookIcon from "../assets/icon-facebook.png";
 import githubIcon from "../assets/icon-github.png";
 import linkedinIcon from "../assets/icon-linkedin.png";
-import resumePdf from "../assets/thaw-zin-htun-resume.pdf";
 import telegramIcon from "../assets/icon-telegram.png";
 
 const socialLinks = [
@@ -48,13 +47,14 @@ const About = () => {
         </p>
         
         <div className="btn-container">
-          <button
-            className="btn btn-color-2"
-            onClick={() => window.open(resumePdf, "_blank", "noopener,noreferrer")}
+          <a
+            className="btn btn-color-2 profile-resume-btn"
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Resume
-          </button>
-          {/* ... contact button ... */}
+          </a>
         </div>
 
         <div id="socials-container">
