@@ -33,6 +33,8 @@ export const projects = [
   {
     slug: "sit-health-nexus",
     title: "SIT Health Nexus",
+    seoDescription:
+      "SIT Health Nexus combines falls efficacy surveys, guided participant tasks, and browser-based MediaPipe movement analysis in a functional health assessment platform.",
     type: "Academic Project",
     status: "Academic Project",
     categories: ["Applied AI", "Full-Stack"],
@@ -110,6 +112,8 @@ export const projects = [
   {
     slug: "pulsepoint",
     title: "PulsePoint Fitness",
+    seoDescription:
+      "PulsePoint Fitness is an academic gym platform for class bookings, waitlists, recurring membership billing, admin workflows, and an OpenAI-powered gym assistant.",
     type: "Academic Project",
     status: "Academic Project",
     categories: ["Full-Stack", "Applied AI"],
@@ -183,6 +187,8 @@ export const projects = [
   {
     slug: "speedup",
     title: "SpeedUp",
+    seoDescription:
+      "SpeedUp turns uploaded study materials into adaptive quizzes, flashcards, and explainable AI tutoring through a collaborative learning platform.",
     type: "GreyMatter DL Week project",
     status: "Hackathon Project",
     categories: ["Applied AI", "Full-Stack"],
@@ -255,6 +261,8 @@ export const projects = [
   {
     slug: "finsight",
     title: "Financial Trend Analysis Dashboard",
+    seoDescription:
+      "The Financial Trend Analysis Dashboard by Thaw Zin Htun is a Python Streamlit app for stock analysis with RSI, interactive charts, market news, and an AI assistant.",
     type: "Academic Project",
     status: "Academic Project",
     categories: ["Data & Analytics", "Applied AI"],

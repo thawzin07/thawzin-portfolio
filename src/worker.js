@@ -166,6 +166,37 @@ export default {
       return handleContact(request, env);
     }
 
+    if (request.method === "GET" || request.method === "HEAD") {
+      const normalizedPath = url.pathname.replace(/\/+$/, "") || "/";
+
+      if (normalizedPath === "/projects") {
+        return Response.redirect(`${url.origin}/#projects`, 301);
+      }
+
+      const isPrerenderedRoute = /^\/(?:education|contact|projects\/[^/]+)$/.test(
+        normalizedPath,
+      );
+
+      if (isPrerenderedRoute && normalizedPath !== url.pathname) {
+        return Response.redirect(
+          `${url.origin}${normalizedPath}${url.search}`,
+          308,
+        );
+      }
+
+      if (isPrerenderedRoute) {
+        const assetUrl = new URL(request.url);
+        assetUrl.pathname = `${normalizedPath}/index.html`;
+        return env.ASSETS.fetch(
+          new Request(assetUrl, {
+            method: request.method,
+            headers: request.headers,
+            redirect: request.redirect,
+          }),
+        );
+      }
+    }
+
     return env.ASSETS.fetch(request);
   },
 };

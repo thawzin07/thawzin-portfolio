@@ -13,42 +13,31 @@ import "./App.css";
 // PAGE COMPONENTS
 import Home from "./pages/Home";
 import Education from "./pages/Education";
-import Projects from "./pages/Projects";
 import ProjectCaseStudy from "./pages/ProjectCaseStudy";
 import Contact from "./pages/Contact";
 import { projects } from "./data/projects";
 
-const SITE_URL = "https://thawzinhtun.com";
-const DEFAULT_IMAGE = `${SITE_URL}/assets/thaw-zin-htun-profile.jpg`;
+export const SITE_URL = "https://thawzinhtun.com";
+export const DEFAULT_IMAGE = `${SITE_URL}/assets/thaw-zin-htun-profile.jpg`;
+
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 const staticSeo = {
   "/": {
     title: "Thaw Zin Htun | AI & Software Developer",
     description:
       "Thaw Zin Htun is an Applied Artificial Intelligence undergraduate at Singapore Institute of Technology and a software developer building AI tools, web applications, and data dashboards.",
-    keywords:
-      "Thaw Zin Htun, Thaw Zin, AI engineer, software developer, Applied Artificial Intelligence, Singapore Institute of Technology, Singapore Polytechnic, React developer, Python developer",
-  },
-  "/projects": {
-    title: "Projects | Thaw Zin Htun",
-    description:
-      "Selected software, AI, and data projects by Thaw Zin Htun, including PulsePoint Fitness, SpeedUp, and FinSight Dashboard.",
-    keywords:
-      "Thaw Zin Htun projects, AI portfolio, software developer portfolio, PulsePoint Fitness, SpeedUp, FinSight Dashboard, React, Python, PHP",
   },
   "/education": {
     title: "Education & Skills | Thaw Zin Htun",
     description:
       "Education and technical skills of Thaw Zin Htun, an Applied Artificial Intelligence undergraduate at Singapore Institute of Technology and Singapore Polytechnic IT graduate.",
-    keywords:
-      "Thaw Zin Htun education, Singapore Institute of Technology, Singapore Polytechnic, Applied Artificial Intelligence, Diploma in Information Technology, AI skills, software skills",
   },
   "/contact": {
     title: "Contact | Thaw Zin Htun",
     description:
       "Contact Thaw Zin Htun for software development, AI engineering, project collaboration, internship, and portfolio inquiries.",
-    keywords:
-      "Contact Thaw Zin Htun, hire AI developer Singapore, software developer contact, portfolio contact",
   },
 };
 
@@ -62,7 +51,7 @@ const setLinkHref = (selector, value) => {
   if (element && value) element.setAttribute("href", value);
 };
 
-const getSeoForPath = (pathname) => {
+export const getSeoForPath = (pathname) => {
   const projectMatch = pathname.match(/^\/projects\/([^/]+)$/);
 
   if (projectMatch) {
@@ -71,10 +60,8 @@ const getSeoForPath = (pathname) => {
     if (project) {
       return {
         title: `${project.title} | Thaw Zin Htun`,
-        description: `${project.title} case study by Thaw Zin Htun: ${project.brief}`,
-        keywords: `Thaw Zin Htun, ${project.title}, ${project.tags.join(
-          ", ",
-        )}, software developer, AI portfolio, project case study`,
+        description:
+          project.seoDescription || `${project.title} case study by Thaw Zin Htun. ${project.brief}`,
         type: "article",
         project,
       };
@@ -84,11 +71,17 @@ const getSeoForPath = (pathname) => {
   return staticSeo[pathname] || staticSeo["/"];
 };
 
-const buildStructuredData = (pathname, seo) => {
+export const buildStructuredData = (
+  pathname,
+  seo,
+  projectImage = seo.project?.img
+    ? new URL(seo.project.img, `${SITE_URL}/`).href
+    : DEFAULT_IMAGE,
+) => {
   const canonical = `${SITE_URL}${pathname}`;
   const projectItemList = {
     "@type": "ItemList",
-    "@id": `${SITE_URL}/projects#project-list`,
+    "@id": `${SITE_URL}/#project-list`,
     name: "Portfolio Projects",
     itemListElement: projects.map((project, index) => ({
       "@type": "ListItem",
@@ -152,7 +145,6 @@ const buildStructuredData = (pathname, seo) => {
 
   const getPageType = () => {
     if (pathname === "/") return "ProfilePage";
-    if (pathname === "/projects") return "CollectionPage";
     if (pathname === "/education") return "AboutPage";
     if (pathname === "/contact") return "ContactPage";
     return "WebPage";
@@ -160,7 +152,6 @@ const buildStructuredData = (pathname, seo) => {
 
   const getMainEntity = () => {
     if (pathname === "/") return { "@id": `${SITE_URL}/#person` };
-    if (pathname === "/projects") return { "@id": projectItemList["@id"] };
     if (seo.project) return { "@id": `${canonical}#project` };
     return undefined;
   };
@@ -176,12 +167,13 @@ const buildStructuredData = (pathname, seo) => {
     description: seo.description,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#person` },
+    ...(pathname === "/" ? { hasPart: { "@id": projectItemList["@id"] } } : {}),
     ...(mainEntity ? { mainEntity } : {}),
   };
 
   const graph = [person, webSite, webPage];
 
-  if (pathname === "/projects") {
+  if (pathname === "/") {
     graph.push(projectItemList);
   }
 
@@ -193,9 +185,12 @@ const buildStructuredData = (pathname, seo) => {
       description: seo.project.brief,
       codeRepository: seo.project.github,
       url: canonical,
+      image: projectImage,
       creator: { "@id": `${SITE_URL}/#person` },
-      programmingLanguage: seo.project.tags,
-      applicationCategory: "Portfolio project",
+      ...(seo.project.programmingLanguages?.length
+        ? { programmingLanguage: seo.project.programmingLanguages }
+        : {}),
+      keywords: seo.project.tags,
     });
   }
 
@@ -210,21 +205,32 @@ function SeoManager() {
   const pathname = location.pathname;
   const seo = useMemo(() => getSeoForPath(pathname), [pathname]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const canonical = `${SITE_URL}${pathname}`;
+    const image = seo.project?.img
+      ? new URL(seo.project.img, `${SITE_URL}/`).href
+      : DEFAULT_IMAGE;
+    const imageAlt = seo.project
+      ? `${seo.project.title} application screenshot`
+      : "Profile photo of Thaw Zin Htun";
 
     document.title = seo.title;
     setMetaContent('meta[name="description"]', seo.description);
-    setMetaContent('meta[name="keywords"]', seo.keywords);
     setLinkHref('link[rel="canonical"]', canonical);
     setMetaContent('meta[property="og:title"]', seo.title);
     setMetaContent('meta[property="og:description"]', seo.description);
     setMetaContent('meta[property="og:type"]', seo.type || "website");
     setMetaContent('meta[property="og:url"]', canonical);
-    setMetaContent('meta[property="og:image"]', DEFAULT_IMAGE);
+    setMetaContent('meta[property="og:image"]', image);
+    setMetaContent('meta[property="og:image:alt"]', imageAlt);
+    setMetaContent(
+      'meta[property="og:image:type"]',
+      image.toLowerCase().includes(".png") ? "image/png" : "image/jpeg",
+    );
     setMetaContent('meta[name="twitter:title"]', seo.title);
     setMetaContent('meta[name="twitter:description"]', seo.description);
-    setMetaContent('meta[name="twitter:image"]', DEFAULT_IMAGE);
+    setMetaContent('meta[name="twitter:image"]', image);
+    setMetaContent('meta[name="twitter:image:alt"]', imageAlt);
 
     let structuredData = document.getElementById("route-structured-data");
     if (!structuredData) {
@@ -456,10 +462,10 @@ function ScrollToTopButton() {
   );
 }
 
-function AppContent() {
+export function AppContent() {
   const location = useLocation();
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const html = document.documentElement;
     const previousScrollBehavior = html.style.scrollBehavior;
     html.style.scrollBehavior = "auto";
