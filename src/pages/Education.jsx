@@ -278,16 +278,14 @@ const useSkillIconRef = (isOutline) => {
     if (!svg || !mark) return;
 
     const bounds = mark.getBBox();
-    const viewBox = svg.viewBox.baseVal;
-    if (!bounds.width || !bounds.height || !viewBox.width || !viewBox.height) return;
+    if (!bounds.width || !bounds.height) return;
 
-    const scaleX = svg.clientWidth / viewBox.width;
-    const scaleY = svg.clientHeight / viewBox.height;
     const stroke = isOutline ? Number.parseFloat(getComputedStyle(svg).strokeWidth) || 0 : 0;
-    const scaleToHeight = 28 / ((bounds.height + stroke) * scaleY);
-    const scaleToWidth = 28 / ((bounds.width + stroke) * scaleX);
-
-    svg.style.transform = `scale(${Math.min(scaleToHeight, scaleToWidth)})`;
+    const padding = isOutline ? Math.max(0.6, stroke / 2) : 0.25;
+    svg.setAttribute(
+      "viewBox",
+      `${bounds.x - padding} ${bounds.y - padding} ${bounds.width + padding * 2} ${bounds.height + padding * 2}`,
+    );
   }, [isOutline]);
 
   return iconRef;
