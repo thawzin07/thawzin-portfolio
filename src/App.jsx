@@ -41,6 +41,8 @@ const staticSeo = {
   },
 };
 
+const normalizePathname = (pathname) => pathname.replace(/\/+$/, "") || "/";
+
 const setMetaContent = (selector, value) => {
   const element = document.head.querySelector(selector);
   if (element && value) element.setAttribute("content", value);
@@ -52,7 +54,8 @@ const setLinkHref = (selector, value) => {
 };
 
 export const getSeoForPath = (pathname) => {
-  const projectMatch = pathname.match(/^\/projects\/([^/]+)$/);
+  const normalizedPathname = normalizePathname(pathname);
+  const projectMatch = normalizedPathname.match(/^\/projects\/([^/]+)$/);
 
   if (projectMatch) {
     const project = projects.find((item) => item.slug === projectMatch[1]);
@@ -68,7 +71,7 @@ export const getSeoForPath = (pathname) => {
     }
   }
 
-  return staticSeo[pathname] || staticSeo["/"];
+  return staticSeo[normalizedPathname] || staticSeo["/"];
 };
 
 export const buildStructuredData = (
@@ -78,7 +81,8 @@ export const buildStructuredData = (
     ? new URL(seo.project.img, `${SITE_URL}/`).href
     : DEFAULT_IMAGE,
 ) => {
-  const canonical = `${SITE_URL}${pathname}`;
+  const normalizedPathname = normalizePathname(pathname);
+  const canonical = `${SITE_URL}${normalizedPathname}`;
   const projectItemList = {
     "@type": "ItemList",
     "@id": `${SITE_URL}/#project-list`,
@@ -144,14 +148,14 @@ export const buildStructuredData = (
   };
 
   const getPageType = () => {
-    if (pathname === "/") return "ProfilePage";
-    if (pathname === "/education") return "AboutPage";
-    if (pathname === "/contact") return "ContactPage";
+    if (normalizedPathname === "/") return "ProfilePage";
+    if (normalizedPathname === "/education") return "AboutPage";
+    if (normalizedPathname === "/contact") return "ContactPage";
     return "WebPage";
   };
 
   const getMainEntity = () => {
-    if (pathname === "/") return { "@id": `${SITE_URL}/#person` };
+    if (normalizedPathname === "/") return { "@id": `${SITE_URL}/#person` };
     if (seo.project) return { "@id": `${canonical}#project` };
     return undefined;
   };
@@ -167,13 +171,13 @@ export const buildStructuredData = (
     description: seo.description,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#person` },
-    ...(pathname === "/" ? { hasPart: { "@id": projectItemList["@id"] } } : {}),
+    ...(normalizedPathname === "/" ? { hasPart: { "@id": projectItemList["@id"] } } : {}),
     ...(mainEntity ? { mainEntity } : {}),
   };
 
   const graph = [person, webSite, webPage];
 
-  if (pathname === "/") {
+  if (normalizedPathname === "/") {
     graph.push(projectItemList);
   }
 
@@ -202,7 +206,7 @@ export const buildStructuredData = (
 
 function SeoManager() {
   const location = useLocation();
-  const pathname = location.pathname;
+  const pathname = normalizePathname(location.pathname);
   const seo = useMemo(() => getSeoForPath(pathname), [pathname]);
 
   useIsomorphicLayoutEffect(() => {
